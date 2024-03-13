@@ -3,26 +3,22 @@ export type User = {
   name: string;
   email: string;
   password: string;
+  club: 'tocha' | 'flama' | 'faisca' | 'ursinhos' | 'jv' | 'vq7';
 };
 
-export type Customer = {
+export type Child = {
   id: string;
   name: string;
   email: string;
   image_url: string;
 };
 
-export type Invoice = {
+export type Record = {
   id: string;
-  customer_id: string;
-  amount: number;
-  date: string;
-  status: 'pending' | 'paid';
-};
-
-export type Revenue = {
-  month: string;
-  revenue: number;
+  child_id: string;
+  atual_club: number;
+  date: Date;
+  attendant: string;
 };
 
 export type LatestInvoice = {
@@ -48,14 +44,30 @@ export type InvoicesTable = {
   status: 'pending' | 'paid';
 };
 
-export type CustomersTableType = {
+export type ChildrenTableType = {
   id: string;
   name: string;
-  email: string;
-  image_url: string;
-  total_invoices: number;
-  total_pending: number;
-  total_paid: number;
+  birth_date: string;
+  affiliation: string;
+  fone: string;
+  attendant: 'pending' | 'attendant';
+};
+
+export type ClubChildrenTableType = {
+  id: string;
+  name: string;
+  birth_date: string;
+  affiliation: string;
+  fone: string;
+  attendant: 'pending' | 'attendant';
+  atual_club: 'tocha' | 'flama' | 'faisca' | 'ursinhos' | 'jv' | 'vq7';
+};
+
+export type ClubChildrenType = {
+  id: string;
+  child_id: string;
+  talentos: number;
+  atual_club: string;
 };
 
 export type FormattedCustomersTable = {
@@ -68,9 +80,12 @@ export type FormattedCustomersTable = {
   total_paid: string;
 };
 
-export type CustomerField = {
+export type ChildField = {
   id: string;
   name: string;
+  talentos: number;
+  atualClub: string;
+  birthDate: string;
 };
 
 export type InvoiceForm = {
@@ -78,4 +93,10 @@ export type InvoiceForm = {
   customer_id: string;
   amount: number;
   status: 'pending' | 'paid';
+};
+
+
+export type Revenue = {
+  month: string;
+  revenue: number;
 };

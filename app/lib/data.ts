@@ -1,12 +1,12 @@
 import { sql } from '@vercel/postgres';
 import {
-  CustomerField,
-  CustomersTableType,
-  InvoiceForm,
-  InvoicesTable,
-  LatestInvoiceRaw,
   User,
-  Revenue,
+  Child,
+  Record,
+  ChildField,
+  ChildrenTableType,
+  InvoicesTable,
+  ClubChildrenTableType,
 } from './definitions';
 import { formatCurrency } from './utils';
 import { unstable_noStore as noStore } from 'next/cache';
@@ -17,7 +17,7 @@ export async function fetchRevenue() {
   noStore();
 
   try {
-    const data = await sql<Revenue>`SELECT * FROM revenue`;
+    const data = await sql`SELECT * FROM revenue`;
 
     return data.rows;
   } catch (error) {
@@ -29,12 +29,12 @@ export async function fetchRevenue() {
 export async function fetchLatestInvoices() {
   noStore();
   try {
-    const data = await sql<LatestInvoiceRaw>`
-      SELECT invoices.amount, customers.name, customers.image_url, customers.email, invoices.id
-      FROM invoices
-      JOIN customers ON invoices.customer_id = customers.id
-      ORDER BY invoices.date DESC
-      LIMIT 5`;
+    const data = await sql`
+       SELECT invoices.amount, customers.name, customers.image_url, customers.email, invoices.id
+       FROM invoices
+       JOIN customers ON invoices.customer_id = customers.id
+       ORDER BY invoices.date DESC
+       LIMIT 5`;
 
     const latestInvoices = data.rows.map((invoice) => ({
       ...invoice,
@@ -53,9 +53,9 @@ export async function fetchCardData() {
     const invoiceCountPromise = sql`SELECT COUNT(*) FROM invoices`;
     const customerCountPromise = sql`SELECT COUNT(*) FROM customers`;
     const invoiceStatusPromise = sql`SELECT
-         SUM(CASE WHEN status = 'paid' THEN amount ELSE 0 END) AS "paid",
-         SUM(CASE WHEN status = 'pending' THEN amount ELSE 0 END) AS "pending"
-         FROM invoices`;
+          SUM(CASE WHEN status = 'paid' THEN amount ELSE 0 END) AS "paid",
+          SUM(CASE WHEN status = 'pending' THEN amount ELSE 0 END) AS "pending"
+          FROM invoices`;
 
     const data = await Promise.all([
       invoiceCountPromise,
@@ -89,26 +89,26 @@ export async function fetchFilteredInvoices(
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
   try {
-    const invoices = await sql<InvoicesTable>`
-      SELECT
-        invoices.id,
-        invoices.amount,
-        invoices.date,
-        invoices.status,
-        customers.name,
-        customers.email,
-        customers.image_url
-      FROM invoices
-      JOIN customers ON invoices.customer_id = customers.id
-      WHERE
-        customers.name ILIKE ${`%${query}%`} OR
-        customers.email ILIKE ${`%${query}%`} OR
-        invoices.amount::text ILIKE ${`%${query}%`} OR
-        invoices.date::text ILIKE ${`%${query}%`} OR
-        invoices.status ILIKE ${`%${query}%`}
-      ORDER BY invoices.date DESC
-      LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
-    `;
+    const invoices = await sql`
+       SELECT
+         invoices.id,
+         invoices.amount,
+         invoices.date,
+         invoices.status,
+         customers.name,
+         customers.email,
+         customers.image_url
+       FROM invoices
+       JOIN customers ON invoices.customer_id = customers.id
+       WHERE
+         customers.name ILIKE ${`%${query}%`} OR
+         customers.email ILIKE ${`%${query}%`} OR
+         invoices.amount::text ILIKE ${`%${query}%`} OR
+         invoices.date::text ILIKE ${`%${query}%`} OR
+         invoices.status ILIKE ${`%${query}%`}
+       ORDER BY invoices.date DESC
+       LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+     `;
 
     return invoices.rows;
   } catch (error) {
@@ -117,44 +117,130 @@ export async function fetchFilteredInvoices(
   }
 }
 
-export async function fetchInvoicesPages(query: string) {
+export async function fetchAttendatPages(query: string, club: string) {
   noStore();
   try {
-    const count = await sql`SELECT COUNT(*)
-    FROM invoices
-    JOIN customers ON invoices.customer_id = customers.id
+    if (club === 'ursinhos') {
+      const count = await sql`SELECT COUNT(*)
+    FROM children
+    INNER JOIN record ON children.id = record.child_id
+    INNER JOIN ursinhos ON children.id = ursinhos.child_id
     WHERE
-      customers.name ILIKE ${`%${query}%`} OR
-      customers.email ILIKE ${`%${query}%`} OR
-      invoices.amount::text ILIKE ${`%${query}%`} OR
-      invoices.date::text ILIKE ${`%${query}%`} OR
-      invoices.status ILIKE ${`%${query}%`}
-  `;
+      children.name ILIKE ${`%${query}%`} OR
+      children.birth_date::text ILIKE ${`%${query}%`} OR
+      children.affiliation ILIKE ${`%${query}%`} OR
+      children.fone::text ILIKE ${`%${query}%`} OR
+      record.attendant::text ILIKE ${`%${query}%`}
+   `;
 
-    const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
-    return totalPages;
+      const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
+      return totalPages;
+    }
+    if (club === 'faisca') {
+      const count = await sql`SELECT COUNT(*)
+    FROM children
+    INNER JOIN record ON children.id = record.child_id
+    INNER JOIN faisca ON children.id = faisca.child_id
+    WHERE
+      children.name ILIKE ${`%${query}%`} OR
+      children.birth_date::text ILIKE ${`%${query}%`} OR
+      children.affiliation ILIKE ${`%${query}%`} OR
+      children.fone::text ILIKE ${`%${query}%`} OR
+      record.attendant::text ILIKE ${`%${query}%`}
+   `;
+
+      const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
+      return totalPages;
+    }
+    if (club === 'flama') {
+      const count = await sql`SELECT COUNT(*)
+    FROM children
+    INNER JOIN record ON children.id = record.child_id
+    INNER JOIN flama ON children.id = flama.child_id
+    WHERE
+      children.name ILIKE ${`%${query}%`} OR
+      children.birth_date::text ILIKE ${`%${query}%`} OR
+      children.affiliation ILIKE ${`%${query}%`} OR
+      children.fone::text ILIKE ${`%${query}%`} OR
+      record.attendant::text ILIKE ${`%${query}%`}
+   `;
+
+      const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
+      return totalPages;
+    }
+    if (club === 'tocha') {
+      const count = await sql`SELECT COUNT(*)
+    FROM children
+    INNER JOIN record ON children.id = record.child_id
+    INNER JOIN tocha ON children.id = tocha.child_id
+    WHERE
+      children.name ILIKE ${`%${query}%`} OR
+      children.birth_date::text ILIKE ${`%${query}%`} OR
+      children.affiliation ILIKE ${`%${query}%`} OR
+      children.fone::text ILIKE ${`%${query}%`} OR
+      record.attendant::text ILIKE ${`%${query}%`}
+   `;
+
+      const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
+      return totalPages;
+    }
+    if (club === 'jv') {
+      const count = await sql`SELECT COUNT(*)
+    FROM children
+    INNER JOIN record ON children.id = record.child_id
+    INNER JOIN jv ON children.id = jv.child_id
+    WHERE
+      children.name ILIKE ${`%${query}%`} OR
+      children.birth_date::text ILIKE ${`%${query}%`} OR
+      children.affiliation ILIKE ${`%${query}%`} OR
+      children.fone::text ILIKE ${`%${query}%`} OR
+      record.attendant::text ILIKE ${`%${query}%`}
+   `;
+
+      const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
+      return totalPages;
+    }
+    if (club === 'vq7') {
+      const count = await sql`SELECT COUNT(*)
+    FROM children
+    INNER JOIN record ON children.id = record.child_id
+    INNER JOIN vq7 ON children.id = vq7.child_id
+    WHERE
+      children.name ILIKE ${`%${query}%`} OR
+      children.birth_date::text ILIKE ${`%${query}%`} OR
+      children.affiliation ILIKE ${`%${query}%`} OR
+      children.fone::text ILIKE ${`%${query}%`} OR
+      record.attendant::text ILIKE ${`%${query}%`}
+   `;
+
+      const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
+      return totalPages;
+    } else {
+      return 0
+    }
+
   } catch (error) {
     console.error('Database Error:', error);
-    throw new Error('Failed to fetch total number of invoices.');
+    throw new Error('Failed to fetch total number of children.');
   }
 }
 
 export async function fetchInvoiceById(id: string) {
   noStore();
   try {
-    const data = await sql<InvoiceForm>`
-      SELECT
-        invoices.id,
-        invoices.customer_id,
-        invoices.amount,
-        invoices.status
-      FROM invoices
-      WHERE invoices.id = ${id};
-    `;
+    const data = await sql`
+       SELECT
+         invoices.id,
+         invoices.customer_id,
+         invoices.amount,
+         invoices.status
+       FROM invoices
+       WHERE invoices.id = ${id};
+     `;
 
     const invoice = data.rows.map((invoice) => ({
       ...invoice,
-      // Convert amount from cents to dollars
+      //       // Convert amount from cents to dollars
       amount: invoice.amount / 100,
     }));
 
@@ -165,59 +251,212 @@ export async function fetchInvoiceById(id: string) {
   }
 }
 
-export async function fetchCustomers() {
+export async function fetchChildren() {
   try {
-    const data = await sql<CustomerField>`
-      SELECT
-        id,
-        name
-      FROM customers
-      ORDER BY name ASC
-    `;
+    const data = await sql<ChildField>`
+        SELECT
+          id,
+          name
+        FROM children
+        ORDER BY name ASC
+      `;
 
-    const customers = data.rows;
-    return customers;
+    const children = data.rows;
+    return children;
   } catch (err) {
     console.error('Database Error:', err);
-    throw new Error('Failed to fetch all customers.');
+    throw new Error('Failed to fetch all children.');
   }
 }
 
 export async function fetchFilteredCustomers(query: string) {
   noStore();
   try {
-    const data = await sql<CustomersTableType>`
-		SELECT
-		  customers.id,
-		  customers.name,
-		  customers.email,
-		  customers.image_url,
-		  COUNT(invoices.id) AS total_invoices,
-		  SUM(CASE WHEN invoices.status = 'pending' THEN invoices.amount ELSE 0 END) AS total_pending,
-		  SUM(CASE WHEN invoices.status = 'paid' THEN invoices.amount ELSE 0 END) AS total_paid
-		FROM customers
-		LEFT JOIN invoices ON customers.id = invoices.customer_id
-		WHERE
-		  customers.name ILIKE ${`%${query}%`} OR
-        customers.email ILIKE ${`%${query}%`}
-		GROUP BY customers.id, customers.name, customers.email, customers.image_url
-		ORDER BY customers.name ASC
-	  `;
+    const data = await sql<ChildrenTableType>`
+  		SELECT
+  		  children.id,
+  		  children.name,
+  		  children.image_url
+  		FROM children
+  		LEFT JOIN invoices ON children.id = invoices.customer_id
+  		WHERE
+  		  children.name ILIKE ${`%${query}%`} OR
+          children.email ILIKE ${`%${query}%`}
+  		GROUP BY children.id, children.name, children.email, children.image_url
+  		ORDER BY children.name ASC
+  	  `;
 
-    const customers = data.rows.map((customer) => ({
-      ...customer,
-      total_pending: formatCurrency(customer.total_pending),
-      total_paid: formatCurrency(customer.total_paid),
+    const children = data.rows.map((child) => ({
+      ...child,
     }));
 
-    return customers;
+    return children;
   } catch (err) {
     console.error('Database Error:', err);
     throw new Error('Failed to fetch customer table.');
   }
 }
 
-export async function getUser(email: string) {
+export async function fetchFilteredChildren(
+  query: string,
+  currentPage: number,
+  club: string
+) {
+  noStore();
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+
+  try {
+    if (club === 'ursinhos') {
+      const children = await sql<ChildrenTableType>`
+       SELECT
+         children.id,
+         children.name,
+         children.birth_date,
+         children.affiliation,
+         children.fone,
+         record.attendant
+       FROM children
+       INNER JOIN record ON children.id = record.child_id
+       INNER JOIN ursinhos ON children.id = ursinhos.child_id
+       WHERE
+         children.name ILIKE ${`%${query}%`} OR
+         children.birth_date::text ILIKE ${`%${query}%`} OR
+         children.affiliation ILIKE ${`%${query}%`} OR
+         children.fone::text ILIKE ${`%${query}%`} OR
+         record.attendant ILIKE ${`%${query}%`}
+       ORDER BY children.name DESC
+       LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+     `;
+
+      return children.rows;
+    }
+    if (club === 'faisca') {
+      const children = await sql<ChildrenTableType>`
+       SELECT
+         children.id,
+         children.name,
+         children.birth_date,
+         children.affiliation,
+         children.fone,
+         record.attendant
+       FROM children
+       INNER JOIN record ON children.id = record.child_id
+       INNER JOIN faisca ON children.id = faisca.child_id
+       WHERE
+         children.name ILIKE ${`%${query}%`} OR
+         children.birth_date::text ILIKE ${`%${query}%`} OR
+         children.affiliation ILIKE ${`%${query}%`} OR
+         children.fone::text ILIKE ${`%${query}%`} OR
+         record.attendant ILIKE ${`%${query}%`}
+       ORDER BY children.name DESC
+       LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+     `;
+
+      return children.rows;
+    }
+    if (club === 'flama') {
+      const children = await sql<ChildrenTableType>`
+       SELECT
+         children.id,
+         children.name,
+         children.birth_date,
+         children.affiliation,
+         children.fone,
+         record.attendant
+       FROM children
+       INNER JOIN record ON children.id = record.child_id
+       INNER JOIN flama ON children.id = flama.child_id
+       WHERE
+         children.name ILIKE ${`%${query}%`} OR
+         children.birth_date::text ILIKE ${`%${query}%`} OR
+         children.affiliation ILIKE ${`%${query}%`} OR
+         children.fone::text ILIKE ${`%${query}%`} OR
+         record.attendant ILIKE ${`%${query}%`}
+       ORDER BY children.name DESC
+       LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+     `;
+
+      return children.rows;
+    }
+    if (club === 'tocha') {
+      const children = await sql<ChildrenTableType>`
+       SELECT
+         children.id,
+         children.name,
+         children.birth_date,
+         children.affiliation,
+         children.fone,
+         record.attendant
+       FROM children
+       INNER JOIN record ON children.id = record.child_id
+       INNER JOIN tocha ON children.id = tocha.child_id
+       WHERE
+         children.name ILIKE ${`%${query}%`} OR
+         children.birth_date::text ILIKE ${`%${query}%`} OR
+         children.affiliation ILIKE ${`%${query}%`} OR
+         children.fone::text ILIKE ${`%${query}%`} OR
+         record.attendant ILIKE ${`%${query}%`}
+       ORDER BY children.name DESC
+       LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+     `;
+
+      return children.rows;
+    }
+    if (club === 'jv') {
+      const children = await sql<ChildrenTableType>`
+       SELECT
+         children.id,
+         children.name,
+         children.birth_date,
+         children.affiliation,
+         children.fone,
+         record.attendant
+       FROM children
+       INNER JOIN record ON children.id = record.child_id
+       INNER JOIN jv ON children.id = jv.child_id
+       WHERE
+         children.name ILIKE ${`%${query}%`} OR
+         children.birth_date::text ILIKE ${`%${query}%`} OR
+         children.affiliation ILIKE ${`%${query}%`} OR
+         children.fone::text ILIKE ${`%${query}%`} OR
+         record.attendant ILIKE ${`%${query}%`}
+       ORDER BY children.name DESC
+       LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+     `;
+
+      return children.rows;
+    }
+    if (club === 'vq7') {
+      const children = await sql<ChildrenTableType>`
+       SELECT
+         children.id,
+         children.name,
+         children.birth_date,
+         children.affiliation,
+         children.fone,
+         record.attendant
+       FROM children
+       INNER JOIN record ON children.id = record.child_id
+       INNER JOIN vq7 ON children.id = vq7.child_id
+       WHERE
+         children.name ILIKE ${`%${query}%`} OR
+         children.birth_date::text ILIKE ${`%${query}%`} OR
+         children.affiliation ILIKE ${`%${query}%`} OR
+         children.fone::text ILIKE ${`%${query}%`} OR
+         record.attendant ILIKE ${`%${query}%`}
+       ORDER BY children.name DESC
+       LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+     `;
+
+      return children.rows;
+    }
+  } catch (err) {
+    console.error('Database Error:', err);
+    throw new Error('Failed to fetch children table.');
+  }
+}
+
+export async function getUser(email: string | undefined) {
   try {
     const user = await sql`SELECT * FROM users WHERE email=${email}`;
     return user.rows[0] as User;
