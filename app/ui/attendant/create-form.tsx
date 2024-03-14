@@ -1,6 +1,5 @@
 'use client';
 
-import { ChildField } from '@/app/lib/definitions';
 import Link from 'next/link';
 import {
   CheckIcon,

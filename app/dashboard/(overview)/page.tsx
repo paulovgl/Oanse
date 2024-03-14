@@ -1,9 +1,8 @@
 import CardWrapper from '@/app/ui/dashboard/cards';
-import RevenueChart from '@/app/ui/dashboard/revenue-chart';
-import TopFiveChildren from '@/app/ui/dashboard/latest-invoices';
+import TopFiveChildren from '@/app/ui/dashboard/top-five-children';
 import { lusitana } from '@/app/ui/fonts';
 import { Suspense } from 'react';
-import { RevenueChartSkeleton, TopFiveChildrenSkeleton, CardsSkeleton } from '@/app/ui/skeletons';
+import { TopFiveChildrenSkeleton, CardsSkeleton } from '@/app/ui/skeletons';
 import { getUserData } from '@/app/lib/data';
 
 

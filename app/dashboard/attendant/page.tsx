@@ -7,7 +7,6 @@ import { InvoicesTableSkeleton } from '@/app/ui/skeletons';
 import { Suspense } from 'react';
 import { fetchAttendatPages } from '@/app/lib/data';
 import { Metadata } from 'next';
-import { formatDateToLocal, generateSaturdays } from '@/app/lib/utils';
 import { getUserData } from '@/app/lib/data';
 
 export const metadata: Metadata = {
