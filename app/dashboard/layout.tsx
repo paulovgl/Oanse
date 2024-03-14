@@ -1,5 +1,5 @@
 import SideNav from '@/app/ui/dashboard/sidenav';
-import { getUserData } from '@/auth';
+import { getUserData } from '@/app/lib/data';
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
     const currentUserData = await getUserData()

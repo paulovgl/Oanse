@@ -29,7 +29,7 @@ export default async function AttendantTable({
                   <div>
                     <div className="mb-2 flex items-center">
                       <Image
-                        src={"/customers/delba-de-oliveira.png"}
+                        src={"/customers/emil-kowalski.png"}
                         className="mr-2 rounded-full"
                         width={28}
                         height={28}

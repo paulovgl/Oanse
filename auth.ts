@@ -5,7 +5,6 @@ import { z } from 'zod';
 import { sql } from '@vercel/postgres';
 import type { User } from '@/app/lib/definitions';
 import bcrypt from 'bcrypt';
-import { getUser as getAllDataUser } from '@/app/lib/data';
 
 async function getUser(email: string): Promise<User | undefined> {
   try {
@@ -41,10 +40,3 @@ export const { auth, signIn, signOut } = NextAuth({
     }),
   ],
 });
-
-
-export const getUserData = async () => {
-  const session = await auth()
-  const currentUserData = (await getAllDataUser(session?.user?.email?.toString()))
-  return currentUserData;
-}

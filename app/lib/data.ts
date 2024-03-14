@@ -7,9 +7,12 @@ import {
   ChildrenTableType,
   InvoicesTable,
   ClubChildrenTableType,
+  InvoiceForm,
+  TopFiveChildren,
 } from './definitions';
 import { formatCurrency } from './utils';
 import { unstable_noStore as noStore } from 'next/cache';
+import { auth } from '@/auth';
 
 export async function fetchRevenue() {
   // Add noStore() here to prevent the response from being cached.
@@ -50,27 +53,33 @@ export async function fetchLatestInvoices() {
 export async function fetchCardData() {
   noStore();
   try {
-    const invoiceCountPromise = sql`SELECT COUNT(*) FROM invoices`;
-    const customerCountPromise = sql`SELECT COUNT(*) FROM customers`;
-    const invoiceStatusPromise = sql`SELECT
+    const childCountPromise = sql`SELECT COUNT(*) FROM flama`;
+    const talentosCountPromise = sql`
+          SELECT COUNT(*) 
+          FROM sections
+          INNER JOIN children ON children.id = sections.child_id
+          INNER JOIN flama ON flama.child_id = sections.child_id
+    `;
+    const invoiceStatusPromise = sql`
+          SELECT
           SUM(CASE WHEN status = 'paid' THEN amount ELSE 0 END) AS "paid",
           SUM(CASE WHEN status = 'pending' THEN amount ELSE 0 END) AS "pending"
           FROM invoices`;
 
     const data = await Promise.all([
-      invoiceCountPromise,
-      customerCountPromise,
+      childCountPromise,
+      talentosCountPromise,
       invoiceStatusPromise,
     ]);
 
-    const numberOfInvoices = Number(data[0].rows[0].count ?? '0');
-    const numberOfCustomers = Number(data[1].rows[0].count ?? '0');
+    const numberOfChildren = Number(data[0].rows[0].count ?? '0');
+    const numberOfTalentos = Number(data[1].rows[0].count ?? '0');
     const totalPaidInvoices = formatCurrency(data[2].rows[0].paid ?? '0');
     const totalPendingInvoices = formatCurrency(data[2].rows[0].pending ?? '0');
 
     return {
-      numberOfCustomers,
-      numberOfInvoices,
+      numberOfChildren,
+      numberOfTalentos,
       totalPaidInvoices,
       totalPendingInvoices,
     };
@@ -228,7 +237,7 @@ export async function fetchAttendatPages(query: string, club: string) {
 export async function fetchInvoiceById(id: string) {
   noStore();
   try {
-    const data = await sql`
+    const data = await sql<InvoiceForm>`
        SELECT
          invoices.id,
          invoices.customer_id,
@@ -251,21 +260,123 @@ export async function fetchInvoiceById(id: string) {
   }
 }
 
-export async function fetchChildren() {
+export async function fetchTopFiveChildren(
+  club: string
+) {
+  noStore();
   try {
-    const data = await sql<ChildField>`
-        SELECT
-          id,
-          name
-        FROM children
-        ORDER BY name ASC
-      `;
+    if (club === 'ursinhos') {
+      const data = await sql<TopFiveChildren>`
+       SELECT
+         children.id,
+         children.name,
+         children.birth_date,
+         ursinhos.talentos
+       FROM children
+       INNER JOIN ursinhos ON children.id = ursinhos.child_id
+       ORDER BY ursinhos.talentos DESC
+       LIMIT 5
+     `;
 
-    const children = data.rows;
-    return children;
+      const children = data.rows.map((invoice) => ({
+        ...invoice,
+        talentos: formatCurrency(invoice.talentos),
+      }));
+      return children;
+    }
+    if (club === 'faisca') {
+      const data = await sql<TopFiveChildren>`
+       SELECT
+         children.id,
+         children.name,
+         children.birth_date,
+         faisca.talentos
+       FROM children
+       INNER JOIN faisca ON children.id = faisca.child_id
+       ORDER BY faisca.talentos DESC
+       LIMIT 5
+     `;
+      const children = data.rows.map((invoice) => ({
+        ...invoice,
+        talentos: formatCurrency(invoice.talentos),
+      }));
+      return children;
+    }
+    if (club === 'flama') {
+      const data = await sql<TopFiveChildren>`
+       SELECT
+         children.id,
+         children.name,
+         children.birth_date,
+         flama.talentos
+       FROM children
+       INNER JOIN flama ON children.id = flama.child_id
+       ORDER BY flama.talentos DESC
+       LIMIT 5
+     `;
+      const children = data.rows.map((invoice) => ({
+        ...invoice,
+        talentos: formatCurrency(invoice.talentos),
+      }));
+      return children;
+    }
+    if (club === 'tocha') {
+      const data = await sql<TopFiveChildren>`
+       SELECT
+         children.id,
+         children.name,
+         children.birth_date,
+         tocha.talentos
+       FROM children
+       INNER JOIN tocha ON children.id = tocha.child_id
+       ORDER BY tocha.talentos DESC
+       LIMIT 5
+     `;
+      const children = data.rows.map((invoice) => ({
+        ...invoice,
+        talentos: formatCurrency(invoice.talentos),
+      }));
+      return children;
+    }
+    if (club === 'jv') {
+      const data = await sql<TopFiveChildren>`
+       SELECT
+         children.id,
+         children.name,
+         children.birth_date,
+         jv.talentos
+       FROM children
+       INNER JOIN jv ON children.id = jv.child_id
+       ORDER BY jv.talentos DESC
+       LIMIT 5
+     `;
+      const children = data.rows.map((invoice) => ({
+        ...invoice,
+        talentos: formatCurrency(invoice.talentos),
+      }));
+      return children;
+    }
+    if (club === 'vq7') {
+      const data = await sql<TopFiveChildren>`
+       SELECT
+         children.id,
+         children.name,
+         children.birth_date,
+         vq7.talentos
+       FROM children
+       INNER JOIN vq7 ON children.id = vq7.child_id
+       ORDER BY vq7.talentos DESC
+       LIMIT 5
+     `;
+      const children = data.rows.map((invoice) => ({
+        ...invoice,
+        talentos: formatCurrency(invoice.talentos),
+      }));
+      return children;
+    }
   } catch (err) {
     console.error('Database Error:', err);
-    throw new Error('Failed to fetch all children.');
+    throw new Error('Failed to fetch top five children.');
   }
 }
 
@@ -456,7 +567,7 @@ export async function fetchFilteredChildren(
   }
 }
 
-export async function getUser(email: string | undefined) {
+async function getUser(email: string | undefined) {
   try {
     const user = await sql`SELECT * FROM users WHERE email=${email}`;
     return user.rows[0] as User;
@@ -464,4 +575,10 @@ export async function getUser(email: string | undefined) {
     console.error('Failed to fetch user:', error);
     throw new Error('Failed to fetch user.');
   }
+}
+
+export async function getUserData() {
+  const session = await auth()
+  const currentUserData = (await getUser(session?.user?.email?.toString()))
+  return currentUserData;
 }

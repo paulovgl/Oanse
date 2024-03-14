@@ -53,6 +53,13 @@ export type ChildrenTableType = {
   attendant: 'pending' | 'attendant';
 };
 
+export type TopFiveChildren = {
+  id: string;
+  name: string;
+  birth_date: string;
+  talentos: number;
+};
+
 export type ClubChildrenTableType = {
   id: string;
   name: string;

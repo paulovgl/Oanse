@@ -1,15 +1,12 @@
 import Form from '@/app/ui/attendant/edit-form';
 import Breadcrumbs from '@/app/ui/attendant/breadcrumbs';
-import { fetchInvoiceById, fetchCustomers } from '@/app/lib/data';
+import { fetchInvoiceById } from '@/app/lib/data';
 import { notFound } from 'next/navigation';
 
 
 export default async function Page({ params }: { params: { id: string } }) {
     const id = params.id;
-    const [invoice, customers] = await Promise.all([
-        fetchInvoiceById(id),
-        fetchCustomers(),
-    ]);
+    const invoice = await fetchInvoiceById(id)
 
     if (!invoice) {
         notFound();
@@ -27,7 +24,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                     },
                 ]}
             />
-            <Form invoice={invoice} customers={customers} />
+            <Form invoice={invoice} />
         </main>
     );
 }
