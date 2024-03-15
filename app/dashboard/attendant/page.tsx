@@ -5,9 +5,11 @@ import { CreateChild } from '@/app/ui/attendant/buttons';
 import { lusitana } from '@/app/ui/fonts';
 import { InvoicesTableSkeleton } from '@/app/ui/skeletons';
 import { Suspense } from 'react';
-import { fetchAttendatPages } from '@/app/lib/data';
+import { fetchAttendatPages, fetchChildren } from '@/app/lib/data';
 import { Metadata } from 'next';
 import { getUserData } from '@/app/lib/data';
+import { formatDateToLocal, generateSaturdays } from '@/app/lib/utils';
+import { createRecord } from '@/app/lib/actions';
 
 export const metadata: Metadata = {
     title: 'Frequência',
@@ -24,10 +26,17 @@ export default async function Page({
     const query = searchParams?.query || '';
     const currentPage = Number(searchParams?.page) || 1;
     const currentUserClub = (await getUserData()).club
-
     const totalPages = await fetchAttendatPages(query, currentUserClub);
 
     // if (generateSaturdays().includes(formatDateToLocal(new Date().toDateString()))) {
+
+    //     // Make all attendant record
+    //     const children = await fetchChildren(currentUserClub)
+    //     if (children != undefined) {
+    //         for (let index = 0; index < generateSaturdays().length; index++) {
+    //             createRecord(children[index])
+    //         }
+    //     }
     if (true) {
         return (
             <div className="w-full">
@@ -52,8 +61,4 @@ export default async function Page({
                 <h2 className="text-center">Para dar presenças anteriores navegue até <strong>Oansistas</strong>.</h2>
             </div>)
     }
-
-
-
-
 }

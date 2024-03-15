@@ -9,6 +9,7 @@ import {
   ClubChildrenTableType,
   InvoiceForm,
   TopFiveChildren,
+  ClubChildrenType,
 } from './definitions';
 import { formatCurrency } from './utils';
 import { unstable_noStore as noStore } from 'next/cache';
@@ -50,41 +51,216 @@ export async function fetchLatestInvoices() {
   }
 }
 
-export async function fetchCardData() {
+export async function fetchCardData(club: string) {
   noStore();
   try {
-    const childCountPromise = sql`SELECT COUNT(*) FROM flama`;
-    const talentosCountPromise = sql`
+    let data
+    let childCountPromise;
+    let talentosCountPromise;
+    let topSectionsPromise;
+    let topAttendantPromise;
+
+    if (club === 'ursinhos') {
+      childCountPromise = sql`
+          SELECT COUNT(*) FROM ursinhos 
+    `;
+      talentosCountPromise = sql`
+          SELECT COUNT(*) 
+          FROM sections
+          INNER JOIN children ON children.id = sections.child_id
+          INNER JOIN ursinhos ON ursinhos.child_id = sections.child_id
+    `;
+      topSectionsPromise = sql`
+          SELECT children.name, COUNT(*)
+          FROM children
+          INNER JOIN sections ON sections.child_id = children.id
+          INNER JOIN ursinhos ON ursinhos.child_id = sections.child_id
+          GROUP BY children.name
+          ORDER BY count DESC
+          LIMIT 1
+    `;
+      topAttendantPromise = sql`
+          SELECT children.name, COUNT(*)
+          FROM children
+          INNER JOIN record ON record.child_id = children.id
+          INNER JOIN ursinhos ON ursinhos.child_id = record.child_id
+          GROUP BY children.name
+          ORDER BY count DESC
+          LIMIT 1
+    `;
+    }
+    if (club === 'faisca') {
+      childCountPromise = sql`
+          SELECT COUNT(*) FROM faisca 
+    `;
+      talentosCountPromise = sql`
+          SELECT COUNT(*) 
+          FROM sections
+          INNER JOIN children ON children.id = sections.child_id
+          INNER JOIN faisca ON faisca.child_id = sections.child_id
+    `;
+      topSectionsPromise = sql`
+          SELECT children.name, COUNT(*)
+          FROM children
+          INNER JOIN sections ON sections.child_id = children.id
+          INNER JOIN faisca ON faisca.child_id = sections.child_id
+          GROUP BY children.name
+          ORDER BY count DESC
+          LIMIT 1
+    `;
+      topAttendantPromise = sql`
+          SELECT children.name, COUNT(*)
+          FROM children
+          INNER JOIN record ON record.child_id = children.id
+          INNER JOIN faisca ON faisca.child_id = record.child_id
+          GROUP BY children.name
+          ORDER BY count DESC
+          LIMIT 1
+    `;
+    }
+    if (club === 'flama') {
+      childCountPromise = sql`
+          SELECT COUNT(*) FROM flama 
+    `;
+      talentosCountPromise = sql`
           SELECT COUNT(*) 
           FROM sections
           INNER JOIN children ON children.id = sections.child_id
           INNER JOIN flama ON flama.child_id = sections.child_id
     `;
-    const invoiceStatusPromise = sql`
-          SELECT
-          SUM(CASE WHEN status = 'paid' THEN amount ELSE 0 END) AS "paid",
-          SUM(CASE WHEN status = 'pending' THEN amount ELSE 0 END) AS "pending"
-          FROM invoices`;
+      topSectionsPromise = sql`
+          SELECT children.name, COUNT(*)
+          FROM children
+          INNER JOIN sections ON sections.child_id = children.id
+          INNER JOIN flama ON flama.child_id = sections.child_id
+          GROUP BY children.name
+          ORDER BY count DESC
+          LIMIT 1
+    `;
+      topAttendantPromise = sql`
+          SELECT children.name, COUNT(*)
+          FROM children
+          INNER JOIN record ON record.child_id = children.id
+          INNER JOIN flama ON flama.child_id = record.child_id
+          GROUP BY children.name
+          ORDER BY count DESC
+          LIMIT 1
+    `;
+    }
+    if (club === 'tocha') {
+      childCountPromise = sql`
+          SELECT COUNT(*) FROM tocha 
+    `;
+      talentosCountPromise = sql`
+          SELECT COUNT(*) 
+          FROM sections
+          INNER JOIN children ON children.id = sections.child_id
+          INNER JOIN tocha ON tocha.child_id = sections.child_id
+    `;
+      topSectionsPromise = sql`
+          SELECT children.name, COUNT(*)
+          FROM children
+          INNER JOIN sections ON sections.child_id = children.id
+          INNER JOIN tocha ON tocha.child_id = sections.child_id
+          GROUP BY children.name
+          ORDER BY count DESC
+          LIMIT 1
+    `;
+      topAttendantPromise = sql`
+          SELECT children.name, COUNT(*)
+          FROM children
+          INNER JOIN record ON record.child_id = children.id
+          INNER JOIN tocha ON tocha.child_id = record.child_id
+          GROUP BY children.name
+          ORDER BY count DESC
+          LIMIT 1
+    `;
+    }
+    if (club === 'jv') {
+      childCountPromise = sql`
+          SELECT COUNT(*) FROM jv 
+    `;
+      talentosCountPromise = sql`
+          SELECT COUNT(*) 
+          FROM sections
+          INNER JOIN children ON children.id = sections.child_id
+          INNER JOIN jv ON jv.child_id = sections.child_id
+    `;
+      topSectionsPromise = sql`
+          SELECT children.name, COUNT(*)
+          FROM children
+          INNER JOIN sections ON sections.child_id = children.id
+          INNER JOIN jv ON jv.child_id = sections.child_id
+          GROUP BY children.name
+          ORDER BY count DESC
+          LIMIT 1
+    `;
+      topAttendantPromise = sql`
+          SELECT children.name, COUNT(*)
+          FROM children
+          INNER JOIN record ON record.child_id = children.id
+          INNER JOIN jv ON jv.child_id = record.child_id
+          GROUP BY children.name
+          ORDER BY count DESC
+          LIMIT 1
+    `;
+    }
+    if (club === 'vq7') {
+      childCountPromise = sql`
+          SELECT COUNT(*) FROM vq7 
+    `;
+      talentosCountPromise = sql`
+          SELECT COUNT(*) 
+          FROM sections
+          INNER JOIN children ON children.id = sections.child_id
+          INNER JOIN vq7 ON vq7.child_id = sections.child_id
+    `;
+      topSectionsPromise = sql`
+          SELECT children.name, COUNT(*)
+          FROM children
+          INNER JOIN sections ON sections.child_id = children.id
+          INNER JOIN vq7 ON vq7.child_id = sections.child_id
+          GROUP BY children.name
+          ORDER BY count DESC
+          LIMIT 1
+    `;
+      topAttendantPromise = sql`
+          SELECT children.name, COUNT(*)
+          FROM children
+          INNER JOIN record ON record.child_id = children.id
+          INNER JOIN vq7 ON vq7.child_id = record.child_id
+          GROUP BY children.name
+          ORDER BY count DESC
+          LIMIT 1
+    `;
+    }
 
-    const data = await Promise.all([
+    data = await Promise.all([
       childCountPromise,
       talentosCountPromise,
-      invoiceStatusPromise,
+      topSectionsPromise,
+      topAttendantPromise,
     ]);
 
-    const numberOfChildren = Number(data[0].rows[0].count ?? '0');
-    const numberOfTalentos = Number(data[1].rows[0].count ?? '0');
-    const totalPaidInvoices = formatCurrency(data[2].rows[0].paid ?? '0');
-    const totalPendingInvoices = formatCurrency(data[2].rows[0].pending ?? '0');
+    const numberOfChildren = Number(data[0]?.rows[0].count ?? '0');
+    const numberOfTalentos = Number(data[1]?.rows[0].count ?? '0');
+    const topSectionsChildren = String(data[2]?.rows[0].name ?? '0');
+    const topAttendantChildren = String(data[3]?.rows[0].name ?? '0');
 
     return {
       numberOfChildren,
       numberOfTalentos,
-      totalPaidInvoices,
-      totalPendingInvoices,
+      topSectionsChildren,
+      topAttendantChildren,
     };
   } catch (error) {
     console.error('Database Error:', error);
+    return {
+      numberOfChildren: "0",
+      numberOfTalentos: "0",
+      topSectionsChildren: "0",
+      topAttendantChildren: "0",
+    };
     throw new Error('Failed to fetch card data.');
   }
 }
@@ -230,6 +406,7 @@ export async function fetchAttendatPages(query: string, club: string) {
 
   } catch (error) {
     console.error('Database Error:', error);
+    return 0
     throw new Error('Failed to fetch total number of children.');
   }
 }
@@ -564,6 +741,95 @@ export async function fetchFilteredChildren(
   } catch (err) {
     console.error('Database Error:', err);
     throw new Error('Failed to fetch children table.');
+  }
+}
+
+export async function fetchChildren(
+  club: string
+) {
+  noStore();
+  try {
+    if (club === 'ursinhos') {
+      const children = await sql<ClubChildrenType>`
+       SELECT
+         children.id,
+         children.birth_date,
+         children.talentos,
+         children.atual_club
+       FROM children
+       INNER JOIN ursinhos ON children.id = ursinhos.child_id
+     `;
+
+      return children.rows;
+    }
+    if (club === 'faisca') {
+      const children = await sql<ClubChildrenType>`
+       SELECT
+         children.id,
+         children.birth_date,
+         children.talentos,
+         children.atual_club
+       FROM children
+       INNER JOIN faisca ON children.id = faisca.child_id
+     `;
+
+      return children.rows;
+    }
+    if (club === 'flama') {
+      const children = await sql<ClubChildrenType>`
+       SELECT
+         children.id,
+         children.birth_date,
+         children.talentos,
+         children.atual_club
+       FROM children
+       INNER JOIN flama ON children.id = flama.child_id
+     `;
+
+      return children.rows;
+    }
+    if (club === 'tocha') {
+      const children = await sql<ClubChildrenType>`
+       SELECT
+         children.id,
+         children.birth_date,
+         children.talentos,
+         children.atual_club
+       FROM children
+       INNER JOIN tocha ON children.id = tocha.child_id
+     `;
+
+      return children.rows;
+    }
+    if (club === 'jv') {
+      const children = await sql<ClubChildrenType>`
+       SELECT
+         children.id,
+         children.birth_date,
+         children.talentos,
+         children.atual_club
+       FROM children
+       INNER JOIN jv ON children.id = jv.child_id
+     `;
+
+      return children.rows;
+    }
+    if (club === 'vq7') {
+      const children = await sql<ClubChildrenType>`
+       SELECT
+         children.id,
+         children.birth_date,
+         children.talentos,
+         children.atual_club
+       FROM children
+       INNER JOIN vq7 ON children.id = vq7.child_id
+     `;
+
+      return children.rows;
+    }
+  } catch (err) {
+    console.error('Database Error:', err);
+    throw new Error('Failed to fetch children.');
   }
 }
 

@@ -14,18 +14,18 @@ const iconMap = {
   sections: ClipboardDocumentListIcon,
 };
 
-export default async function CardWrapper() {
+export default async function CardWrapper({ club }: { club: string }) {
   const {
     numberOfChildren,
     numberOfTalentos,
-    totalPaidInvoices,
-    totalPendingInvoices,
-  } = await fetchCardData();
+    topSectionsChildren,
+    topAttendantChildren,
+  } = await fetchCardData(club);
   return (
     <>
-      <Card title="Top 1 Seção" value={totalPaidInvoices} type="moreSections" />
-      <Card title="Top 1 Presença" value={totalPendingInvoices} type="moreAttendance" />
-      <Card title="Total Crianças" value={numberOfChildren} type="children" />
+      <Card title="Top 1 Seção" value={topSectionsChildren} type="moreSections" />
+      <Card title="Top 1 Presença" value={topAttendantChildren} type="moreAttendance" />
+      <Card title="Total Oansistas" value={numberOfChildren} type="children" />
       <Card
         title="Total Seções"
         value={numberOfTalentos}

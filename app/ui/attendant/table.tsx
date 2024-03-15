@@ -49,7 +49,7 @@ export default async function AttendantTable({
                     <p>{child.fone}</p>
                   </div>
                   <div className="flex justify-end gap-2">
-                    <UpdateInvoice id={child.id} />
+                    {/* <UpdateInvoice id={child.id} /> */}
                     <PushAttendant id={child.id} action='attendant' />
                     <PushAttendant id={child.id} action='pending' />
                   </div>
@@ -112,7 +112,7 @@ export default async function AttendantTable({
                   </td>
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">
-                      <UpdateInvoice id={child.id} />
+                      {/* <UpdateInvoice id={child.id} /> */}
                       <PushAttendant id={child.id} action='attendant' />
                       <PushAttendant id={child.id} action='pending' />
                     </div>

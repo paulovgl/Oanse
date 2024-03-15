@@ -141,7 +141,7 @@ export async function createChild(prevState: State, formData: FormData) {
   redirect('/dashboard/attendant');
 }
 
-export async function createRecord(data: ClubChildrenType[]) {
+export async function createRecord(data: ClubChildrenType[] | ClubChildrenType) {
   // Prepare data for insertion into the database
   const date = new Date().toISOString().split('T')[0];
   const saturdays = generateSaturdays();
@@ -183,15 +183,21 @@ export async function createRecord(data: ClubChildrenType[]) {
   }
 
   // Get the child Id
-  const id = data.map((value) => {
-    return value.child_id;
-  });
+  let id
+  if (Array.isArray(data)) {
+    id = data.map((value) => {
+      return value.child_id;
+    })
+  } else {
+    id = data.child_id
+  }
 
   // Insert data into the database
   try {
     await sql`
       INSERT INTO record (child_id, date, attendant)
       VALUES (${id.toString()}, ${atualSaturday}, ${'pending'})
+      ON CONFLICT DO NOTHING
     `;
   } catch (error) {
     // If a database error occurs, return a more specific error.

@@ -3,10 +3,45 @@
 const users = [
   {
     id: '410544b2-4001-4271-9855-fec4b6a6442a',
-    name: 'User',
-    email: 'user@nextmail.com',
+    name: 'Ursinhos',
+    email: 'ursinhos@oansemail.com',
+    password: '123456',
+    club: 'ursinhos',
+  },
+  {
+    id: '510544b2-4001-4271-9855-fec4b6a6442a',
+    name: 'Faisca',
+    email: 'faisca@oansemail.com',
+    password: '123456',
+    club: 'faisca',
+  },
+  {
+    id: '610544b2-4001-4271-9855-fec4b6a6442a',
+    name: 'Flama',
+    email: 'flama@oansemail.com',
     password: '123456',
     club: 'flama',
+  },
+  {
+    id: '710544b2-4001-4271-9855-fec4b6a6442a',
+    name: 'Tocha',
+    email: 'tocha@oansemail.com',
+    password: '123456',
+    club: 'tocha',
+  },
+  {
+    id: '810544b2-4001-4271-9855-fec4b6a6442a',
+    name: 'Jovens Vencedores',
+    email: 'jv@oansemail.com',
+    password: '123456',
+    club: 'jv',
+  },
+  {
+    id: '910544b2-4001-4271-9855-fec4b6a6442a',
+    name: 'VQ7',
+    email: 'vq7@oansemail.com',
+    password: '123456',
+    club: 'vq7',
   },
 ];
 
