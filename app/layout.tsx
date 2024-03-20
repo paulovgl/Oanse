@@ -18,7 +18,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-br">
-      <body className={`${inter.className} antialiased`}>
+      <body className={`${inter.className} antialiased bg-slate-950`}>
         {children}
       </body>
     </html>

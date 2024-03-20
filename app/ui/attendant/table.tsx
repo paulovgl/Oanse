@@ -3,6 +3,7 @@ import { UpdateInvoice, DeleteInvoice, PushAttendant } from '@/app/ui/attendant/
 import InvoiceStatus from '@/app/ui/attendant/status';
 import { formatDateToLocal, formatCurrency, generateSaturdays, formatPhoneNumber } from '@/app/lib/utils';
 import { fetchFilteredChildren } from '@/app/lib/data';
+import clsx from 'clsx';
 
 export default async function AttendantTable({
   query,
@@ -18,12 +19,26 @@ export default async function AttendantTable({
   return (
     <div className="mt-6 flow-root">
       <div className="inline-block min-w-full align-middle">
-        <div className="rounded-lg bg-gray-50 p-2 md:pt-0">
+        <div className={clsx("rounded-lg p-2 md:pt-0", {
+          'bg-red-600': currentUserClub === 'ursinhos',
+          'bg-yellow-600': currentUserClub === 'faisca',
+          'bg-green-600': currentUserClub === 'flama',
+          'bg-blue-600': currentUserClub === 'tocha',
+          'bg-gray-300': currentUserClub === 'jv',
+          'bg-gray-600': currentUserClub === 'vq7',
+        })}>
           <div className="md:hidden">
             {children?.map((child) => (
               <div
                 key={child.id}
-                className="mb-2 w-full rounded-md bg-white p-4"
+                className={clsx("mb-2 w-full rounded-md p-4", {
+                  'bg-red-600': currentUserClub === 'ursinhos',
+                  'bg-yellow-600': currentUserClub === 'faisca',
+                  'bg-green-600': currentUserClub === 'flama',
+                  'bg-blue-600': currentUserClub === 'tocha',
+                  'bg-gray-200': currentUserClub === 'jv',
+                  'bg-gray-600': currentUserClub === 'vq7',
+                })}
               >
                 <div className="flex items-center justify-between border-b pb-4">
                   <div>
@@ -80,11 +95,18 @@ export default async function AttendantTable({
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white">
+            <tbody className={clsx("", {
+              'bg-red-600': currentUserClub === 'ursinhos',
+              'bg-yellow-600': currentUserClub === 'faisca',
+              'bg-green-600': currentUserClub === 'flama',
+              'bg-blue-600': currentUserClub === 'tocha',
+              'bg-gray-200': currentUserClub === 'jv',
+              'bg-gray-600': currentUserClub === 'vq7',
+            })}>
               {children?.map((child) => (
                 <tr
                   key={child.id}
-                  className="w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
+                  className="w-full border-b border-black py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
                 >
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex items-center gap-3">

@@ -8,14 +8,15 @@ import { TopFiveChildrenSkeleton } from '../skeletons';
 
 export default async function TopFiveChildren({ club }: { club: string }) {
   const childrenTopFive = await fetchTopFiveChildren(club);
+  
   if (childrenTopFive != undefined) {
     return (
       <div className="flex w-full flex-col md:col-span-4">
-        <h2 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
+        <h2 className={`${lusitana.className} text-white mb-4 text-xl md:text-2xl`}>
           Top Oansistas
         </h2>
-        <div className="flex grow flex-col justify-between rounded-xl bg-gray-50 p-4">
-          <div className="bg-white px-6">
+        <div className="flex grow flex-col justify-between rounded-xl bg-gray-300 p-4">
+          <div className="bg-gray-200 rounded px-6">
             {childrenTopFive.map((child, i) => {
               return (
                 <div
@@ -23,7 +24,7 @@ export default async function TopFiveChildren({ club }: { club: string }) {
                   className={clsx(
                     'flex flex-row items-center justify-between py-4',
                     {
-                      'border-t': i !== 0,
+                      'border-t-black border': i !== 0,
                     },
                   )}
                 >
@@ -54,8 +55,8 @@ export default async function TopFiveChildren({ club }: { club: string }) {
             })}
           </div>
           <div className="flex items-center pb-2 pt-6">
-            <ArrowPathIcon className="h-5 w-5 text-gray-500" />
-            <h3 className="ml-2 text-sm text-gray-500 ">Updated just now</h3>
+            <ArrowPathIcon className="h-5 w-5 text-black" />
+            <h3 className="ml-2 text-sm text-black ">Updated just now</h3>
           </div>
         </div>
       </div>

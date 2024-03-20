@@ -244,8 +244,8 @@ export async function fetchCardData(club: string) {
 
     const numberOfChildren = Number(data[0]?.rows[0].count ?? '0');
     const numberOfTalentos = Number(data[1]?.rows[0].count ?? '0');
-    const topSectionsChildren = String(data[2]?.rows[0].name ?? '0');
-    const topAttendantChildren = String(data[3]?.rows[0].name ?? '0');
+    const topSectionsChildren = String(data[2]?.rows[0]?.name ?? '0');
+    const topAttendantChildren = String(data[3]?.rows[0]?.name ?? '0');
 
     return {
       numberOfChildren,

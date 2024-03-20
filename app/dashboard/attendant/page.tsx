@@ -44,14 +44,14 @@ export default async function Page({
                     <h1 className={`${lusitana.className} text-2xl`}>Frequência</h1>
                 </div>
                 <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
-                    <Search placeholder="Pesquisar crianças..." />
-                    <CreateChild />
+                    <Search currentUserClub={currentUserClub} placeholder="Pesquisar crianças..." />
+                    <CreateChild currentUserClub={currentUserClub} />
                 </div>
                 <Suspense key={query + currentPage} fallback={<InvoicesTableSkeleton />}>
                     <Table query={query} currentPage={currentPage} currentUserClub={currentUserClub} />
                 </Suspense>
                 <div className="mt-5 flex w-full justify-center">
-                    <Pagination totalPages={totalPages} />
+                    <Pagination currentUserClub={currentUserClub} totalPages={totalPages} />
                 </div>
             </div>)
     } else {
