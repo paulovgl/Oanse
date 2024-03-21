@@ -550,9 +550,12 @@ export async function fetchTopFiveChildren(
         talentos: formatCurrency(invoice.talentos),
       }));
       return children;
+    } else {
+      return undefined
     }
   } catch (err) {
     console.error('Database Error:', err);
+    return undefined
     throw new Error('Failed to fetch top five children.');
   }
 }
