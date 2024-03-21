@@ -40,7 +40,7 @@ export default async function AttendantTable({
                   'bg-gray-300': currentUserClub === 'vq7',
                 })}
               >
-                <div className="flex items-center justify-between border-b pb-4">
+                <div className="flex items-center justify-between border-b border-black pb-4">
                   <div>
                     <div className="mb-2 flex items-center">
                       <Image

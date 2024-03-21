@@ -68,11 +68,11 @@ export function Card({
   return (
     <div className={clsx("rounded-xl p-2 shadow-sm", {
       'bg-red-300': currentUserClub === 'ursinhos',
-      'bg-yellow-600': currentUserClub === 'faisca',
-      'bg-green-600': currentUserClub === 'flama',
-      'bg-blue-600': currentUserClub === 'tocha',
+      'bg-yellow-300': currentUserClub === 'faisca',
+      'bg-green-300': currentUserClub === 'flama',
+      'bg-blue-300': currentUserClub === 'tocha',
       'bg-gray-300': currentUserClub === 'jv',
-      'bg-gray-600': currentUserClub === 'vq7',
+      'bg-gray-400': currentUserClub === 'vq7',
     })}>
       <div className="flex p-4">
         {Icon ? <Icon className="h-5 w-5 text-gray-700" /> : null}
@@ -82,11 +82,11 @@ export function Card({
         className={clsx(`${lusitana.className}
           truncate rounded-xl px-4 py-8 text-center text-2xl`, {
           'bg-red-200': currentUserClub === 'ursinhos',
-          'bg-yellow-600': currentUserClub === 'faisca',
-          'bg-green-600': currentUserClub === 'flama',
-          'bg-blue-600': currentUserClub === 'tocha',
+          'bg-yellow-200': currentUserClub === 'faisca',
+          'bg-green-200': currentUserClub === 'flama',
+          'bg-blue-200': currentUserClub === 'tocha',
           'bg-gray-200': currentUserClub === 'jv',
-          'bg-gray-600': currentUserClub === 'vq7',
+          'bg-gray-300': currentUserClub === 'vq7',
         })}
       >
         {value}

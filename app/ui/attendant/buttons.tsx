@@ -18,12 +18,12 @@ export function CreateChild({ currentUserClub }: { currentUserClub: string }) {
         {
           'bg-red-600 hover:bg-red-400 focus-visible:outline-red-300':
             currentUserClub === 'ursinhos',
-          'bg-yellow-300': currentUserClub === 'faisca',
-          'bg-green-300': currentUserClub === 'flama',
-          'bg-blue-300': currentUserClub === 'tocha',
-          'bg-gray-300 hover:bg-gray-200 focus-visible:outline-gray-300':
+          'bg-yellow-600 hover:bg-yellow-400 focus-visible:outline-yellow-300': currentUserClub === 'faisca',
+          'bg-green-600 hover:bg-green-400 focus-visible:outline-green-300': currentUserClub === 'flama',
+          'bg-blue-600 hover:bg-blue-400 focus-visible:outline-blue-300': currentUserClub === 'tocha',
+          'bg-gray-600 hover:bg-gray-400 focus-visible:outline-gray-300':
             currentUserClub === 'jv',
-          'bg-gray-400': currentUserClub === 'vq7',
+          'bg-gray-700 hover:bg-gray-500 focus-visible:outline-gray-300': currentUserClub === 'vq7',
         },
       )}
     >
@@ -66,7 +66,7 @@ export function PushAttendant({
   const updateChildAttendant = updateAttendant.bind(null, id, action);
   return (
     <form action={updateChildAttendant}>
-      <button className="rounded-md border p-2 hover:bg-gray-100">
+      <button className="rounded-md border border-black p-2 hover:bg-gray-100">
         {action === 'pending' && (
           <>
             <span className="sr-only">Falta</span>

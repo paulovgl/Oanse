@@ -51,13 +51,15 @@ export default function NavLinks({ club }: { club: string }) {
               key={link.name}
               href={link.href}
               className={clsx(
-                'flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-yellow-100 hover:text-yellow-600 md:flex-none md:justify-start md:p-2 md:px-3',
+                'flex h-[48px] grow items-center justify-center gap-2 rounded-md border border-yellow-600 p-3 text-sm font-medium text-white hover:text-yellow-600 hover:bg-yellow-100 hover:border-none md:flex-none md:justify-start md:p-2 md:px-3',
                 {
-                  'bg-yellow-100 text-yellow-600 ': pathname === link.href,
+                  'bg-yellow-100 text-yellow-600 md:text-yellow-600 border-none': pathname === link.href,
                 },
               )}
             >
-              <LinkIcon className="w-6" />
+              <LinkIcon className={clsx("w-6", {
+                'text-yellow-600': pathname === link.href,
+              })} />
               <p className="hidden md:block">{link.name}</p>
             </Link>
           );
@@ -67,13 +69,15 @@ export default function NavLinks({ club }: { club: string }) {
               key={link.name}
               href={link.href}
               className={clsx(
-                'flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-green-100 hover:text-green-600 md:flex-none md:justify-start md:p-2 md:px-3',
+                'flex h-[48px] grow items-center justify-center gap-2 rounded-md border border-green-600 p-3 text-sm font-medium text-white hover:text-green-600 hover:bg-green-100 hover:border-none md:flex-none md:justify-start md:p-2 md:px-3',
                 {
-                  'bg-green-100 text-green-600 ': pathname === link.href,
+                  'bg-green-100 text-green-600 md:text-green-600 border-none': pathname === link.href,
                 },
               )}
             >
-              <LinkIcon className="w-6" />
+              <LinkIcon className={clsx("w-6", {
+                'text-green-600': pathname === link.href,
+              })} />
               <p className="hidden md:block">{link.name}</p>
             </Link>
           );
@@ -83,13 +87,15 @@ export default function NavLinks({ club }: { club: string }) {
               key={link.name}
               href={link.href}
               className={clsx(
-                'flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3',
+                'flex h-[48px] grow items-center justify-center gap-2 rounded-md border border-blue-600 p-3 text-sm font-medium text-white hover:text-blue-600 hover:bg-blue-100 hover:border-none md:flex-none md:justify-start md:p-2 md:px-3',
                 {
-                  'bg-sky-100 text-blue-600 ': pathname === link.href,
+                  'bg-blue-100 text-blue-600 md:text-blue-600 border-none': pathname === link.href,
                 },
               )}
             >
-              <LinkIcon className="w-6" />
+              <LinkIcon className={clsx("w-6", {
+                'text-blue-600': pathname === link.href,
+              })} />
               <p className="hidden md:block">{link.name}</p>
             </Link>
           );
@@ -99,19 +105,16 @@ export default function NavLinks({ club }: { club: string }) {
               key={link.name}
               href={link.href}
               className={clsx(
-                'flex h-[48px] grow items-center justify-center gap-2 rounded-md border border-gray-300 p-3 text-sm font-medium text-black hover:bg-gray-300 hover:text-black md:flex-none md:justify-start md:p-2 md:px-3',
+                'flex h-[48px] grow items-center justify-center gap-2 rounded-md border border-gray-600 p-3 text-sm font-medium text-white hover:text-gray-600 hover:bg-gray-100 hover:border-none md:flex-none md:justify-start md:p-2 md:px-3',
                 {
-                  'bg-gray-300 md:bg-gray-300': pathname === link.href,
+                  'bg-gray-100 text-gray-600 md:text-gray-600 border-none': pathname === link.href,
                 },
               )}
             >
               <LinkIcon className={clsx("w-6", {
-                'text-black': pathname === link.href,
+                'text-gray-600': pathname === link.href,
               })} />
-              <p className={clsx("hidden group-hover:text-black md:block", {
-                'text-black': pathname === link.href,
-                'text-gray-300 ': pathname != link.href,
-              })}>{link.name}</p>
+              <p className="hidden md:block">{link.name}</p>
             </Link>
           );
         } else if (club === "vq7") {
@@ -120,13 +123,15 @@ export default function NavLinks({ club }: { club: string }) {
               key={link.name}
               href={link.href}
               className={clsx(
-                'flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-white hover:text-black md:flex-none md:justify-start md:p-2 md:px-3',
+                'flex h-[48px] grow items-center justify-center gap-2 rounded-md border border-gray-700 p-3 text-sm font-medium text-white hover:text-gray-700 hover:bg-gray-200 hover:border-none md:flex-none md:justify-start md:p-2 md:px-3',
                 {
-                  'bg-white text-black ': pathname === link.href,
+                  'bg-gray-200 text-gray-700 md:text-gray-700 border-none': pathname === link.href,
                 },
               )}
             >
-              <LinkIcon className="w-6" />
+              <LinkIcon className={clsx("w-6", {
+                'text-gray-700': pathname === link.href,
+              })} />
               <p className="hidden md:block">{link.name}</p>
             </Link>
           );

@@ -24,7 +24,7 @@ export default function Form({ currentUserClub }: { currentUserClub: string }) {
 
   return (
     <form action={dispatch}>
-      <div className={clsx("rounded-md bg-gray-50 p-4 md:p-6", {
+      <div className={clsx("rounded-md p-4 md:p-6", {
         'bg-red-300': currentUserClub === 'ursinhos',
         'bg-yellow-300': currentUserClub === 'faisca',
         'bg-green-300': currentUserClub === 'flama',
@@ -482,22 +482,22 @@ export default function Form({ currentUserClub }: { currentUserClub: string }) {
           href="/dashboard/attendant"
           className={clsx("flex h-10 items-center rounded-lg px-4 text-sm font-medium text-black transition-colors", {
             'bg-red-300 hover:bg-red-200': currentUserClub === 'ursinhos',
-            'bg-yellow-300': currentUserClub === 'faisca',
-            'bg-green-300': currentUserClub === 'flama',
-            'bg-blue-300': currentUserClub === 'tocha',
-            'bg-gray-300': currentUserClub === 'jv',
-            'bg-gray-400': currentUserClub === 'vq7',
+            'bg-yellow-300 hover:bg-yellow-200': currentUserClub === 'faisca',
+            'bg-green-300 hover:bg-green-200': currentUserClub === 'flama',
+            'bg-blue-300 hover:bg-blue-200': currentUserClub === 'tocha',
+            'bg-gray-300 hover:bg-gray-200': currentUserClub === 'jv',
+            'bg-gray-400 hover:bg-gray-200': currentUserClub === 'vq7',
           })}
         >
           Cancelar
         </Link>
         <Button className={clsx('', {
           'bg-red-600 hover:bg-red-500 focus-visible:outline-red-500 active:bg-red-600': currentUserClub === 'ursinhos',
-          'bg-yellow-600': currentUserClub === 'faisca',
-          'bg-green-600': currentUserClub === 'flama',
-          'bg-blue-600': currentUserClub === 'tocha',
-          'bg-gray-300': currentUserClub === 'jv',
-          'bg-gray-400': currentUserClub === 'vq7',
+          'bg-yellow-600 hover:bg-yellow-500 focus-visible:outline-yellow-500 active:bg-yellow-600': currentUserClub === 'faisca',
+          'bg-green-600 hover:bg-green-500 focus-visible:outline-green-500 active:bg-green-600': currentUserClub === 'flama',
+          'bg-blue-600 hover:bg-blue-500 focus-visible:outline-blue-500 active:bg-blue-600': currentUserClub === 'tocha',
+          'bg-gray-600 hover:bg-gray-500 focus-visible:outline-gray-500 active:bg-gray-600': currentUserClub === 'jv',
+          'bg-gray-700 hover:bg-gray-500 focus-visible:outline-gray-500 active:bg-gray-600': currentUserClub === 'vq7',
         })} type="submit">Adicionar Criança</Button>
       </div>
     </form>
