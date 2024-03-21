@@ -19,10 +19,10 @@ export default async function Page() {
             </div>
             <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-4 lg:grid-cols-8">
                 <Suspense fallback={<TopFiveChildrenSkeleton />}>
-                    <TopFiveChildren club={(await getUserData()).club} />
+                    <TopFiveChildren currentUserClub={(await getUserData()).club} />
                 </Suspense>
                 <Suspense fallback={<TopFiveChildrenSkeleton />}>
-                    <TopFiveChildren club={(await getUserData()).club} />
+                    <TopFiveChildren currentUserClub={(await getUserData()).club} />
                 </Suspense>
             </div>
         </main>

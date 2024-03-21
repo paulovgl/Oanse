@@ -33,13 +33,15 @@ export default function NavLinks({ club }: { club: string }) {
               key={link.name}
               href={link.href}
               className={clsx(
-                'flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:text-red-600 hover:bg-red-100 md:flex-none md:justify-start md:p-2 md:px-3',
+                'flex h-[48px] grow items-center justify-center gap-2 rounded-md border border-red-600 p-3 text-sm font-medium text-white hover:text-red-600 hover:bg-red-100 hover:border-none md:flex-none md:justify-start md:p-2 md:px-3',
                 {
-                  'bg-red-100 text-red-600 ': pathname === link.href,
+                  'bg-red-100 text-red-600 md:text-red-600 border-none': pathname === link.href,
                 },
               )}
             >
-              <LinkIcon className="w-6" />
+              <LinkIcon className={clsx("w-6", {
+                'text-red-600': pathname === link.href,
+              })} />
               <p className="hidden md:block">{link.name}</p>
             </Link>
           );
@@ -97,13 +99,15 @@ export default function NavLinks({ club }: { club: string }) {
               key={link.name}
               href={link.href}
               className={clsx(
-                'group flex h-[48px] grow items-center justify-center gap-2 rounded-md border border-gray-300 p-3 text-sm font-medium text-black hover:bg-gray-300 hover:text-black md:flex-none md:justify-start md:p-2 md:px-3',
+                'flex h-[48px] grow items-center justify-center gap-2 rounded-md border border-gray-300 p-3 text-sm font-medium text-black hover:bg-gray-300 hover:text-black md:flex-none md:justify-start md:p-2 md:px-3',
                 {
                   'bg-gray-300 md:bg-gray-300': pathname === link.href,
                 },
               )}
             >
-              <LinkIcon {...(pathname === link.href) ? { color: 'black' } : { color: 'white' }} className="w-6 group-hover:text-black" />
+              <LinkIcon className={clsx("w-6", {
+                'text-black': pathname === link.href,
+              })} />
               <p className={clsx("hidden group-hover:text-black md:block", {
                 'text-black': pathname === link.href,
                 'text-gray-300 ': pathname != link.href,

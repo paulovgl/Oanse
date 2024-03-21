@@ -20,24 +20,24 @@ export default async function AttendantTable({
     <div className="mt-6 flow-root">
       <div className="inline-block min-w-full align-middle">
         <div className={clsx("rounded-lg p-2 md:pt-0", {
-          'bg-red-600': currentUserClub === 'ursinhos',
-          'bg-yellow-600': currentUserClub === 'faisca',
-          'bg-green-600': currentUserClub === 'flama',
-          'bg-blue-600': currentUserClub === 'tocha',
+          'bg-red-300': currentUserClub === 'ursinhos',
+          'bg-yellow-300': currentUserClub === 'faisca',
+          'bg-green-300': currentUserClub === 'flama',
+          'bg-blue-300': currentUserClub === 'tocha',
           'bg-gray-300': currentUserClub === 'jv',
-          'bg-gray-600': currentUserClub === 'vq7',
+          'bg-gray-400': currentUserClub === 'vq7',
         })}>
           <div className="md:hidden">
             {children?.map((child) => (
               <div
                 key={child.id}
                 className={clsx("mb-2 w-full rounded-md p-4", {
-                  'bg-red-600': currentUserClub === 'ursinhos',
-                  'bg-yellow-600': currentUserClub === 'faisca',
-                  'bg-green-600': currentUserClub === 'flama',
-                  'bg-blue-600': currentUserClub === 'tocha',
+                  'bg-red-200': currentUserClub === 'ursinhos',
+                  'bg-yellow-200': currentUserClub === 'faisca',
+                  'bg-green-200': currentUserClub === 'flama',
+                  'bg-blue-200': currentUserClub === 'tocha',
                   'bg-gray-200': currentUserClub === 'jv',
-                  'bg-gray-600': currentUserClub === 'vq7',
+                  'bg-gray-300': currentUserClub === 'vq7',
                 })}
               >
                 <div className="flex items-center justify-between border-b pb-4">
@@ -96,12 +96,12 @@ export default async function AttendantTable({
               </tr>
             </thead>
             <tbody className={clsx("", {
-              'bg-red-600': currentUserClub === 'ursinhos',
-              'bg-yellow-600': currentUserClub === 'faisca',
-              'bg-green-600': currentUserClub === 'flama',
-              'bg-blue-600': currentUserClub === 'tocha',
+              'bg-red-200': currentUserClub === 'ursinhos',
+              'bg-yellow-200': currentUserClub === 'faisca',
+              'bg-green-200': currentUserClub === 'flama',
+              'bg-blue-200': currentUserClub === 'tocha',
               'bg-gray-200': currentUserClub === 'jv',
-              'bg-gray-600': currentUserClub === 'vq7',
+              'bg-gray-300': currentUserClub === 'vq7',
             })}>
               {children?.map((child) => (
                 <tr

@@ -1,7 +1,10 @@
 import Form from '@/app/ui/attendant/create-form';
 import Breadcrumbs from '@/app/ui/attendant/breadcrumbs';
+import { getUserData } from '@/app/lib/data';
 
 export default async function Page() {
+    const currentUserClub = (await getUserData()).club
+
     return (
         <main>
             <Breadcrumbs
@@ -14,7 +17,7 @@ export default async function Page() {
                     },
                 ]}
             />
-            <Form />
+            <Form currentUserClub={currentUserClub} />
         </main>
     );
 }

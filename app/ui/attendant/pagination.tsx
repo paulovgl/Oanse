@@ -78,7 +78,7 @@ function PaginationNumber({
     {
       'rounded-l-md': position === 'first' || position === 'single',
       'rounded-r-md': position === 'last' || position === 'single',
-      'bg-red-600': currentUserClub === 'ursinhos' && isActive,
+      'z-10 bg-red-600 border-red-500 text-white': currentUserClub === 'ursinhos' && isActive,
       'bg-yellow-600': currentUserClub === 'faisca' && isActive,
       'bg-green-600': currentUserClub === 'flama' && isActive,
       'bg-blue-600': currentUserClub === 'tocha' && isActive,

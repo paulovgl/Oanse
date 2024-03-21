@@ -16,14 +16,22 @@ import { Button } from '@/app/ui/button';
 import { createChild } from '@/app/lib/actions';
 import { useFormState } from 'react-dom';
 import React from 'react';
+import clsx from 'clsx';
 
-export default function Form() {
+export default function Form({ currentUserClub }: { currentUserClub: string }) {
   const initialState = { message: null, errors: {} };
   const [state, dispatch] = useFormState(createChild, initialState);
 
   return (
     <form action={dispatch}>
-      <div className="rounded-md bg-gray-50 p-4 md:p-6">
+      <div className={clsx("rounded-md bg-gray-50 p-4 md:p-6", {
+        'bg-red-300': currentUserClub === 'ursinhos',
+        'bg-yellow-300': currentUserClub === 'faisca',
+        'bg-green-300': currentUserClub === 'flama',
+        'bg-blue-300': currentUserClub === 'tocha',
+        'bg-gray-300': currentUserClub === 'jv',
+        'bg-gray-400': currentUserClub === 'vq7',
+      })}>
         {/* Child Name */}
         <div className="mb-4">
           <label htmlFor="name" className="mb-2 block text-sm font-medium">
@@ -37,9 +45,16 @@ export default function Form() {
                 type="text"
                 placeholder="Digite o nome completo"
                 aria-describedby="name-error"
-                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                className={clsx("peer block w-full rounded-md py-2 pl-10 text-sm outline-2 placeholder:text-gray-600", {
+                  'bg-red-200': currentUserClub === 'ursinhos',
+                  'bg-yellow-200': currentUserClub === 'faisca',
+                  'bg-green-200': currentUserClub === 'flama',
+                  'bg-blue-200': currentUserClub === 'tocha',
+                  'bg-gray-200': currentUserClub === 'jv',
+                  'bg-gray-400': currentUserClub === 'vq7',
+                })}
               />
-              <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+              <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-600 peer-focus:text-gray-900" />
             </div>
           </div>
           <div id="name-error" aria-live="polite" aria-atomic="true">
@@ -66,9 +81,16 @@ export default function Form() {
                 defaultValue=""
                 placeholder="Digite o nascimento em DD/MM/AAAA"
                 aria-describedby="birthDate-error"
-                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                className={clsx("peer block w-full rounded-md py-2 pl-10 text-sm outline-2 placeholder:text-gray-600", {
+                  'bg-red-200': currentUserClub === 'ursinhos',
+                  'bg-yellow-200': currentUserClub === 'faisca',
+                  'bg-green-200': currentUserClub === 'flama',
+                  'bg-blue-200': currentUserClub === 'tocha',
+                  'bg-gray-200': currentUserClub === 'jv',
+                  'bg-gray-400': currentUserClub === 'vq7',
+                })}
               />
-              <CalendarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+              <CalendarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-600 peer-focus:text-gray-900" />
             </div>
           </div>
           <div id="birthDate-error" aria-live="polite" aria-atomic="true">
@@ -94,9 +116,16 @@ export default function Form() {
                 type="tel"
                 placeholder="Digite o telefone 85999999999"
                 aria-describedby="fone-error"
-                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                className={clsx("peer block w-full rounded-md py-2 pl-10 text-sm outline-2 placeholder:text-gray-600", {
+                  'bg-red-200': currentUserClub === 'ursinhos',
+                  'bg-yellow-200': currentUserClub === 'faisca',
+                  'bg-green-200': currentUserClub === 'flama',
+                  'bg-blue-200': currentUserClub === 'tocha',
+                  'bg-gray-200': currentUserClub === 'jv',
+                  'bg-gray-400': currentUserClub === 'vq7',
+                })}
               />
-              <DevicePhoneMobileIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+              <DevicePhoneMobileIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-600 peer-focus:text-gray-900" />
             </div>
           </div>
           <div id="fone-error" aria-live="polite" aria-atomic="true">
@@ -121,7 +150,14 @@ export default function Form() {
                 name="obs"
                 rows={5}
                 aria-describedby="obs-error"
-                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                className={clsx("peer block w-full rounded-md border py-2 text-sm outline-2 placeholder:text-gray-600", {
+                  'bg-red-200': currentUserClub === 'ursinhos',
+                  'bg-yellow-200': currentUserClub === 'faisca',
+                  'bg-green-200': currentUserClub === 'flama',
+                  'bg-blue-200': currentUserClub === 'tocha',
+                  'bg-gray-200': currentUserClub === 'jv',
+                  'bg-gray-400': currentUserClub === 'vq7',
+                })}
               />
             </div>
           </div>
@@ -140,7 +176,14 @@ export default function Form() {
           <legend className="mb-2 block text-sm font-medium">
             É Salva(o)?
           </legend>
-          <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
+          <div className={clsx("rounded-md border border-gray-500 px-[14px] py-3", {
+            'bg-red-200': currentUserClub === 'ursinhos',
+            'bg-yellow-200': currentUserClub === 'faisca',
+            'bg-green-200': currentUserClub === 'flama',
+            'bg-blue-200': currentUserClub === 'tocha',
+            'bg-gray-200': currentUserClub === 'jv',
+            'bg-gray-400': currentUserClub === 'vq7',
+          })}>
             <div className="flex gap-4">
               <div className="flex items-center">
                 <input
@@ -193,7 +236,14 @@ export default function Form() {
           <legend className="mb-2 block text-sm font-medium">
             Filiação
           </legend>
-          <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
+          <div className={clsx("rounded-md border border-gray-500 px-[14px] py-3", {
+            'bg-red-200': currentUserClub === 'ursinhos',
+            'bg-yellow-200': currentUserClub === 'faisca',
+            'bg-green-200': currentUserClub === 'flama',
+            'bg-blue-200': currentUserClub === 'tocha',
+            'bg-gray-200': currentUserClub === 'jv',
+            'bg-gray-400': currentUserClub === 'vq7',
+          })}>
             <div className="flex gap-4">
               <div className="flex items-center">
                 <input
@@ -297,7 +347,14 @@ export default function Form() {
           <legend className="mb-2 block text-sm font-medium">
             Qual o clube a criança irá começar?
           </legend>
-          <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
+          <div className={clsx("rounded-md border border-gray-500 px-[14px] py-3", {
+            'bg-red-200': currentUserClub === 'ursinhos',
+            'bg-yellow-200': currentUserClub === 'faisca',
+            'bg-green-200': currentUserClub === 'flama',
+            'bg-blue-200': currentUserClub === 'tocha',
+            'bg-gray-200': currentUserClub === 'jv',
+            'bg-gray-400': currentUserClub === 'vq7',
+          })}>
             <div className="flex gap-4">
               <div className="flex items-center">
                 <input
@@ -422,12 +479,26 @@ export default function Form() {
       </div>
       <div className="mt-6 flex justify-end gap-4">
         <Link
-          href="/dashboard/attendance"
-          className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
+          href="/dashboard/attendant"
+          className={clsx("flex h-10 items-center rounded-lg px-4 text-sm font-medium text-black transition-colors", {
+            'bg-red-300 hover:bg-red-200': currentUserClub === 'ursinhos',
+            'bg-yellow-300': currentUserClub === 'faisca',
+            'bg-green-300': currentUserClub === 'flama',
+            'bg-blue-300': currentUserClub === 'tocha',
+            'bg-gray-300': currentUserClub === 'jv',
+            'bg-gray-400': currentUserClub === 'vq7',
+          })}
         >
           Cancelar
         </Link>
-        <Button type="submit">Adicionar Criança</Button>
+        <Button className={clsx('', {
+          'bg-red-600 hover:bg-red-500 focus-visible:outline-red-500 active:bg-red-600': currentUserClub === 'ursinhos',
+          'bg-yellow-600': currentUserClub === 'faisca',
+          'bg-green-600': currentUserClub === 'flama',
+          'bg-blue-600': currentUserClub === 'tocha',
+          'bg-gray-300': currentUserClub === 'jv',
+          'bg-gray-400': currentUserClub === 'vq7',
+        })} type="submit">Adicionar Criança</Button>
       </div>
     </form>
   );

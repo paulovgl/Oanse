@@ -1,6 +1,7 @@
 'use client';
 
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import clsx from 'clsx';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
 
@@ -26,7 +27,14 @@ export default function Search({ placeholder, currentUserClub }: { placeholder: 
         Search
       </label>
       <input
-        className="block w-full bg-transparent rounded-md border border-gray-200 py-[9px] pl-10 text-sm text-white outline-2 placeholder:text-white"
+        className={clsx("block w-full bg-transparent rounded-md border py-[9px] pl-10 text-sm text-white outline-2 placeholder:text-white", {
+          'border-red-600': currentUserClub === 'ursinhos',
+          'border-yellow-600': currentUserClub === 'faisca',
+          'border-green-600': currentUserClub === 'flama',
+          'border-blue-600': currentUserClub === 'tocha',
+          'border-gray-200': currentUserClub === 'jv',
+          'border-gray-600': currentUserClub === 'vq7',
+        })}
         placeholder={placeholder}
         onChange={(e) => {
           handleSearch(e.target.value);

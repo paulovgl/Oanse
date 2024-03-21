@@ -6,17 +6,31 @@ import { fetchTopFiveChildren } from '@/app/lib/data';
 import { formatDateToLocal } from '@/app/lib/utils';
 import { TopFiveChildrenSkeleton } from '../skeletons';
 
-export default async function TopFiveChildren({ club }: { club: string }) {
-  const childrenTopFive = await fetchTopFiveChildren(club);
-  
+export default async function TopFiveChildren({ currentUserClub }: { currentUserClub: string }) {
+  const childrenTopFive = await fetchTopFiveChildren(currentUserClub);
+
   if (childrenTopFive != undefined) {
     return (
       <div className="flex w-full flex-col md:col-span-4">
         <h2 className={`${lusitana.className} text-white mb-4 text-xl md:text-2xl`}>
           Top Oansistas
         </h2>
-        <div className="flex grow flex-col justify-between rounded-xl bg-gray-300 p-4">
-          <div className="bg-gray-200 rounded px-6">
+        <div className={clsx("flex grow flex-col justify-between rounded-xl p-4", {
+          'bg-red-300': currentUserClub === 'ursinhos',
+          'bg-yellow-300': currentUserClub === 'faisca',
+          'bg-green-300': currentUserClub === 'flama',
+          'bg-blue-300': currentUserClub === 'tocha',
+          'bg-gray-300': currentUserClub === 'jv',
+          'bg-gray-400': currentUserClub === 'vq7',
+        })}>
+          <div className={clsx("rounded px-6", {
+            'bg-red-200': currentUserClub === 'ursinhos',
+            'bg-yellow-200': currentUserClub === 'faisca',
+            'bg-green-200': currentUserClub === 'flama',
+            'bg-blue-200': currentUserClub === 'tocha',
+            'bg-gray-200': currentUserClub === 'jv',
+            'bg-gray-300': currentUserClub === 'vq7',
+          })}>
             {childrenTopFive.map((child, i) => {
               return (
                 <div
